@@ -314,5 +314,3 @@ C++ and Java`. John Wiley and Sons, Inc, 2003](https://doi.org/10.1109/978047054
 - H. Wickham. `Advanced R`. Chapman and Hall/CRC, first edition edition, 2014. ISBN13: 978-1466586963.
 
 - H. Wickham. `Advanced R`. Chapman and Hall/CRC, second edition edition, 2019. ISBN13: 978-0815384571.
-
----
