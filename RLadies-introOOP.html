@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Introduction to OOP</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Criscely Luján" />
+    <meta name="date" content="2020-12-01" />
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/remark-css/rladies.css" rel="stylesheet" />
+    <link href="libs/remark-css/rladies-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Introduction to OOP
+### Criscely Luján
+### December 1, 2020
+
+---
+
+
+
+
+class: inverse, center, middle
+
+# To keep in touch ! 
+
+&lt;a href="mailto:criscelylujan@gmail.com"&gt;&lt;i class="fa fa-paper-plane fa-fw"&gt;&lt;/i&gt;&amp;nbsp;Personal email: criscelylujan@gmail.com&lt;/a&gt;&lt;br&gt;
+&lt;a href="mailto:criscely.lujan@ird.fr"&gt;&lt;i class="fa fa-paper-plane fa-fw"&gt;&lt;/i&gt;&amp;nbsp; Profesional email: criscely.lujan@ird.fr&lt;/a&gt;&lt;br&gt;
+&lt;a href="http://twitter.com/CriscelyLP"&gt;&lt;i class="fa fa-twitter fa-fw"&gt;&lt;/i&gt;&amp;nbsp; Twitter: @CriscelyLP&lt;/a&gt;&lt;br&gt;
+&lt;a href="http://github.com/CriscelyLP"&gt;&lt;i class="fa fa-github fa-fw"&gt;&lt;/i&gt;&amp;nbsp; GitHub: @CriscelyLP&lt;/a&gt;&lt;br&gt;
+
+
+---
+
+background-image: url("https://media.giphy.com/media/l0IyjiXOXTX6Yemsg/giphy.gif")
+background-position: 50% 50%
+class: center, inverse
+background-size: 800px
+
+---
+
+background-image: url("https://media.giphy.com/media/yeorocc1eT9Cj50HRK/giphy.gif")
+background-position: 50% 50%
+class: center, inverse
+background-size: 900px
+
+---
+
+# OOP?
+
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="img/roberthalf.jpg" alt="www.roberthalf.com" width="600px" /&gt;
+&lt;p class="caption"&gt;www.roberthalf.com&lt;/p&gt;
+&lt;/div&gt;
+
+---
+
+# In a OOP system ...
+
+&lt;br&gt;
+--
+
+- Programmers define a data type of a data structure (`object`),
+
+&lt;br&gt;
+--
+
+- Types of operations (`methods`) that can be applied to the data structure. 
+
+&lt;br&gt;
+--
+
+- All objects with the same attributes and behavior are grouped into collections (`classes`)
+
+---
+
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="img/oop.png" alt="Techtarget" width="500px" /&gt;
+&lt;p class="caption"&gt;Techtarget&lt;/p&gt;
+&lt;/div&gt;
+
+# OOP representation
+
+---
+
+# OOP in R
+
+
+&lt;img src="img/oop-meme.jpg" width="700px" style="display: block; margin: auto;" /&gt;
+
+&lt;br&gt;
+--
+
+- `R` has four OOP implementations: S3, S4, RC (reference classes) and R6.
+
+--
+
+- `Base type` system is not a OOP !
+
+---
+
+# OOP in R
+
+&lt;img src="img/OOPinR.png" width="300px" style="display: block; margin: auto;" /&gt;
+
+--
+
+- S3 is the `simplest OOP` system in R
+
+--
+
+- Most `commonly` used system in CRAN packages
+
+--
+
+- The only OOP system used in the `base` and `stats` packages
+
+(Wickham, 2014)
+
+---
+
+# Recognising objects
+
+- An easy way to recognise objects is by the use of the package `pryr`.
+
+--
+
+
+```r
+library(pryr)
+```
+
+--
+
+
+```r
+# We create a data as an example:
+data = data.frame(x = 1:10, y = letters[1:10])
+str(data)
+```
+
+```
+## 'data.frame':	10 obs. of  2 variables:
+##  $ x: int  1 2 3 4 5 6 7 8 9 10
+##  $ y: Factor w/ 10 levels "a","b","c","d",..: 1 2 3 4 5 6 7 8 9 10
+```
+
+---
+
+# Recognising objects
+
+- The `otype` function determine the object type
+
+--
+
+
+```r
+otype(data) # The data frame is an S3 class
+```
+
+```
+## [1] "S3"
+```
+
+--
+
+
+```r
+otype(data$x) # A vector is not S3
+```
+
+```
+## [1] "base"
+```
+
+--
+
+
+```r
+otype(data$y) # A factor is S3
+```
+
+```
+## [1] "S3"
+```
+
+---
+
+# Exploring classes
+
+- By the use of the function `class`
+
+--
+
+
+```r
+class(data) 
+```
+
+```
+## [1] "data.frame"
+```
+--
+
+
+```r
+class(data$x) 
+```
+
+```
+## [1] "integer"
+```
+
+--
+
+
+```r
+class(data$y) 
+```
+
+```
+## [1] "factor"
+```
+
+---
+
+# Using generic functions
+
+--
+
+- In S3 methods belong to functions called `generic functions`.
+
+--
+
+- To determine if a function is a S3 generic, you can inspect its source code for a call to `UseMethod()`.
+
+--
+
+- `ftype` also describe the function type.
+
+--
+
+
+```r
+mean
+```
+
+```
+## function (x, ...) 
+## UseMethod("mean")
+## &lt;bytecode: 0x5603801baeb0&gt;
+## &lt;environment: namespace:base&gt;
+```
+
+--
+
+
+```r
+ftype(mean) # S3 generic function for the arithmetic mean
+```
+
+```
+## [1] "s3"      "generic"
+```
+
+---
+
+# Calling methods!
+
+- Given a class, the job of an S3 generics is to call the right `S3 method`
+
+--
+
+- You can see all the methods that belong to a generic with `methods()`
+
+
+```r
+methods("mean")
+```
+
+```
+## [1] mean.Date     mean.default  mean.difftime mean.POSIXct  mean.POSIXlt 
+## [6] mean.quosure*
+## see '?methods' for accessing help and source code
+```
+
+--
+
+
+```r
+methods("plot")
+```
+
+```
+##  [1] plot.acf*           plot.data.frame*    plot.decomposed.ts*
+##  [4] plot.default        plot.dendrogram*    plot.density*      
+##  [7] plot.ecdf           plot.factor*        plot.formula*      
+## [10] plot.function       plot.hclust*        plot.histogram*    
+## [13] plot.HoltWinters*   plot.isoreg*        plot.lm*           
+## [16] plot.medpolish*     plot.mlm*           plot.ppr*          
+## [19] plot.prcomp*        plot.princomp*      plot.profile.nls*  
+## [22] plot.raster*        plot.spec*          plot.stepfun       
+## [25] plot.stl*           plot.table*         plot.ts            
+## [28] plot.tskernel*      plot.TukeyHSD*     
+## see '?methods' for accessing help and source code
+```
+
+---
+
+
+```r
+methods("print") # Needing more space ! :) 
+```
+
+```
+##   [1] print.acf*                                          
+##   [2] print.AES*                                          
+##   [3] print.anova*                                        
+##   [4] print.aov*                                          
+##   [5] print.aovlist*                                      
+##   [6] print.ar*                                           
+##   [7] print.Arima*                                        
+##   [8] print.arima0*                                       
+##   [9] print.AsIs                                          
+##  [10] print.aspell*                                       
+##  [11] print.aspell_inspect_context*                       
+##  [12] print.bibentry*                                     
+##  [13] print.Bibtex*                                       
+##  [14] print.browseVignettes*                              
+##  [15] print.by                                            
+##  [16] print.bytes*                                        
+##  [17] print.changedFiles*                                 
+##  [18] print.check_code_usage_in_package*                  
+##  [19] print.check_compiled_code*                          
+##  [20] print.check_demo_index*                             
+##  [21] print.check_depdef*                                 
+##  [22] print.check_details*                                
+##  [23] print.check_details_changes*                        
+##  [24] print.check_doi_db*                                 
+##  [25] print.check_dotInternal*                            
+##  [26] print.check_make_vars*                              
+##  [27] print.check_nonAPI_calls*                           
+##  [28] print.check_package_code_assign_to_globalenv*       
+##  [29] print.check_package_code_attach*                    
+##  [30] print.check_package_code_data_into_globalenv*       
+##  [31] print.check_package_code_startup_functions*         
+##  [32] print.check_package_code_syntax*                    
+##  [33] print.check_package_code_unload_functions*          
+##  [34] print.check_package_compact_datasets*               
+##  [35] print.check_package_CRAN_incoming*                  
+##  [36] print.check_package_datasets*                       
+##  [37] print.check_package_depends*                        
+##  [38] print.check_package_description*                    
+##  [39] print.check_package_description_encoding*           
+##  [40] print.check_package_license*                        
+##  [41] print.check_packages_in_dir*                        
+##  [42] print.check_packages_used*                          
+##  [43] print.check_po_files*                               
+##  [44] print.check_pragmas*                                
+##  [45] print.check_Rd_contents*                            
+##  [46] print.check_Rd_line_widths*                         
+##  [47] print.check_Rd_metadata*                            
+##  [48] print.check_Rd_xrefs*                               
+##  [49] print.check_RegSym_calls*                           
+##  [50] print.check_S3_methods_needing_delayed_registration*
+##  [51] print.check_so_symbols*                             
+##  [52] print.check_T_and_F*                                
+##  [53] print.check_url_db*                                 
+##  [54] print.check_vignette_index*                         
+##  [55] print.checkDocFiles*                                
+##  [56] print.checkDocStyle*                                
+##  [57] print.checkFF*                                      
+##  [58] print.checkRd*                                      
+##  [59] print.checkReplaceFuns*                             
+##  [60] print.checkS3methods*                               
+##  [61] print.checkTnF*                                     
+##  [62] print.checkVignettes*                               
+##  [63] print.citation*                                     
+##  [64] print.codoc*                                        
+##  [65] print.codocClasses*                                 
+##  [66] print.codocData*                                    
+##  [67] print.colorConverter*                               
+##  [68] print.compactPDF*                                   
+##  [69] print.condition                                     
+##  [70] print.connection                                    
+##  [71] print.CRAN_package_reverse_dependencies_and_views*  
+##  [72] print.data.frame                                    
+##  [73] print.Date                                          
+##  [74] print.default                                       
+##  [75] print.dendrogram*                                   
+##  [76] print.density*                                      
+##  [77] print.difftime                                      
+##  [78] print.dist*                                         
+##  [79] print.Dlist                                         
+##  [80] print.DLLInfo                                       
+##  [81] print.DLLInfoList                                   
+##  [82] print.DLLRegisteredRoutines                         
+##  [83] print.dummy_coef*                                   
+##  [84] print.dummy_coef_list*                              
+##  [85] print.ecdf*                                         
+##  [86] print.eigen                                         
+##  [87] print.envlist*                                      
+##  [88] print.factanal*                                     
+##  [89] print.factor                                        
+##  [90] print.family*                                       
+##  [91] print.fileSnapshot*                                 
+##  [92] print.findLineNumResult*                            
+##  [93] print.formula*                                      
+##  [94] print.frame*                                        
+##  [95] print.fseq*                                         
+##  [96] print.ftable*                                       
+##  [97] print.function                                      
+##  [98] print.getAnywhere*                                  
+##  [99] print.glm*                                          
+## [100] print.hclust*                                       
+## [101] print.help_files_with_topic*                        
+## [102] print.hexmode                                       
+## [103] print.HoltWinters*                                  
+## [104] print.hsearch*                                      
+## [105] print.hsearch_db*                                   
+## [106] print.htest*                                        
+## [107] print.html*                                         
+## [108] print.html_dependency*                              
+## [109] print.infl*                                         
+## [110] print.inspect*                                      
+## [111] print.inspect_NILSXP*                               
+## [112] print.integrate*                                    
+## [113] print.isoreg*                                       
+## [114] print.kmeans*                                       
+## [115] print.knitr_kable*                                  
+## [116] print.Latex*                                        
+## [117] print.LaTeX*                                        
+## [118] print.libraryIQR                                    
+## [119] print.listof                                        
+## [120] print.lm*                                           
+## [121] print.loadings*                                     
+## [122] print.loess*                                        
+## [123] print.logLik*                                       
+## [124] print.ls_str*                                       
+## [125] print.medpolish*                                    
+## [126] print.MethodsFunction*                              
+## [127] print.mtable*                                       
+## [128] print.NativeRoutineList                             
+## [129] print.news_db*                                      
+## [130] print.nls*                                          
+## [131] print.noquote                                       
+## [132] print.numeric_version                               
+## [133] print.object_size*                                  
+## [134] print.octmode                                       
+## [135] print.packageDescription*                           
+## [136] print.packageInfo                                   
+## [137] print.packageIQR*                                   
+## [138] print.packageStatus*                                
+## [139] print.pairwise.htest*                               
+## [140] print.person*                                       
+## [141] print.POSIXct                                       
+## [142] print.POSIXlt                                       
+## [143] print.power.htest*                                  
+## [144] print.ppr*                                          
+## [145] print.prcomp*                                       
+## [146] print.princomp*                                     
+## [147] print.proc_time                                     
+## [148] print.quosure*                                      
+## [149] print.quosures*                                     
+## [150] print.raster*                                       
+## [151] print.Rcpp_stack_trace*                             
+## [152] print.Rd*                                           
+## [153] print.recordedplot*                                 
+## [154] print.restart                                       
+## [155] print.RGBcolorConverter*                            
+## [156] print.rlang_box_done*                               
+## [157] print.rlang_box_splice*                             
+## [158] print.rlang_data_pronoun*                           
+## [159] print.rlang_envs*                                   
+## [160] print.rlang_error*                                  
+## [161] print.rlang_fake_data_pronoun*                      
+## [162] print.rlang_lambda_function*                        
+## [163] print.rlang_trace*                                  
+## [164] print.rlang_zap*                                    
+## [165] print.rle                                           
+## [166] print.roman*                                        
+## [167] print.sessionInfo*                                  
+## [168] print.shiny.tag*                                    
+## [169] print.shiny.tag.list*                               
+## [170] print.simple.list                                   
+## [171] print.smooth.spline*                                
+## [172] print.socket*                                       
+## [173] print.srcfile                                       
+## [174] print.srcref                                        
+## [175] print.stepfun*                                      
+## [176] print.stl*                                          
+## [177] print.StructTS*                                     
+## [178] print.subdir_tests*                                 
+## [179] print.summarize_CRAN_check_status*                  
+## [180] print.summary.aov*                                  
+## [181] print.summary.aovlist*                              
+## [182] print.summary.ecdf*                                 
+## [183] print.summary.glm*                                  
+## [184] print.summary.lm*                                   
+## [185] print.summary.loess*                                
+## [186] print.summary.manova*                               
+## [187] print.summary.nls*                                  
+## [188] print.summary.packageStatus*                        
+## [189] print.summary.ppr*                                  
+## [190] print.summary.prcomp*                               
+## [191] print.summary.princomp*                             
+## [192] print.summary.table                                 
+## [193] print.summary.warnings                              
+## [194] print.summaryDefault                                
+## [195] print.table                                         
+## [196] print.tables_aov*                                   
+## [197] print.terms*                                        
+## [198] print.ts*                                           
+## [199] print.tskernel*                                     
+## [200] print.TukeyHSD*                                     
+## [201] print.tukeyline*                                    
+## [202] print.tukeysmooth*                                  
+## [203] print.undoc*                                        
+## [204] print.vignette*                                     
+## [205] print.warnings                                      
+## [206] print.xfun_raw_string*                              
+## [207] print.xfun_rename_seq*                              
+## [208] print.xfun_strict_list*                             
+## [209] print.xgettext*                                     
+## [210] print.xngettext*                                    
+## [211] print.xtabs*                                        
+## see '?methods' for accessing help and source code
+```
+
+---
+
+background-image: url("https://media.giphy.com/media/l0IynFzUXseFwySZi/giphy.gif")
+background-position: 50% 50%
+class: center, inverse
+background-size: 900px
+
+# ... Almost ready!
+
+---
+
+# Some concluding remark
+
+--
+- OOP is important for all R users.
+
+&lt;br&gt;
+--
+
+- If you use R, for SURE you were using classes, methods, and generics! (`OOP system`)
+
+&lt;br&gt;
+--
+
+- Not all R packages use OOP system! :(
+
+&lt;br&gt;
+--
+
+- Always there are new things to learn! 
+
+&lt;br&gt;
+--
+
+- Are you creating a new package? Let's use this time OOP! 💜 ...
+
+#... this will make life easier for users !
+
+---
+
+background-image: url("https://media.giphy.com/media/28fbJdiSmVEpyewYE9/giphy.gif")
+background-position: 50% 50%
+class: center, inverse
+background-size: 600px
+
+---
+
+# Thanks!
+
+- [R-Ladies Freiburg](https://twitter.com/RLadiesFreiburg) for the invitation.
+
+- [R-Ladies Montpellier](https://twitter.com/RLadiesMontpel) for the co-organization.
+
+&lt;br&gt; 
+
+&lt;img src="img/rladies.png" width="300px" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Bibliography
+
+- [A. C. Kak. `Programming with Objects: A Comparative Presentation of Object-Oriented Programming With
+C++ and Java`. John Wiley and Sons, Inc, 2003](https://doi.org/10.1109/9780470547144).
+
+- J. M. Garrido. `Object-oriented programming: from problem solving to Java`. Charles River Media, 1 edition,
+2003.
+
+- [I. D. Craig. `Object-oriented programming languages: Interpretation`. 8, 2007](https://doi.org/
+10.1007/978-1-84628-774-9)
+
+- H. Wickham. `Advanced R`. Chapman and Hall/CRC, first edition edition, 2014. ISBN13: 978-1466586963.
+
+- H. Wickham. `Advanced R`. Chapman and Hall/CRC, second edition edition, 2019. ISBN13: 978-0815384571.
+
+---
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
